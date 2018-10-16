@@ -8,7 +8,8 @@
                 <x-button v-if="showAccessButton" slot="right" type="primary" mini @click.native="sendCode">{{showAccessTip}}</x-button>
                 <x-button v-if="!showAccessButton" disabled type="default" slot="right" mini >{{countdown}}秒后获取</x-button>
             </x-input>
-            <x-button @click.native="login">登录</x-button>
+            <x-button v-if="copCode" @click.native="getCop">{{buttonTitle}}</x-button>
+            <x-button v-if="!copCode" @click.native="login">{{buttonTitle}}</x-button>
             </box>
         </group>
     </div>
@@ -32,7 +33,9 @@ export default {
       body: {
         telno: '',
         code: ''
-      }
+      },
+      copCode: this.$route.query.code,
+      buttonTitle: this.$route.query.code ? '领取' : '登陆'
     }
   },
   methods: {
@@ -117,6 +120,31 @@ export default {
                 type: 'text'
               })
             }
+          } else {
+            this.$vux.toast.show({
+              text: res.data.msg,
+              type: 'text'
+            })
+          }
+        })
+    },
+    getCop () {
+      if (!this.checkInfo()) {
+        return
+      }
+      let vm = this
+      let phone = vm.body.telno.replace(/\s/g, '')
+      vm.$vux.loading.show({
+        text: '努力加载中...'
+      })
+      this.axios.post(baseUrl + 'customer/getcop?code=' + vm.body.code, {phone: phone, cop_id: vm.copCode})
+        .then((res) => {
+          vm.$vux.loading.hide()
+          if (res.data.code === 0) {
+            this.$vux.toast.show({
+              text: '领取成功',
+              type: 'text'
+            })
           } else {
             this.$vux.toast.show({
               text: res.data.msg,

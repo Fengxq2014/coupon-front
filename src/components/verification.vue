@@ -66,7 +66,8 @@ export default {
         vm.$vux.loading.show({
           text: '努力加载中...'
         })
-        vm.axios.post(baseUrl + 'mch/consume', {code: [...value].reverse().join(''), mchid: sessionStorage.phone})
+        // vm.axios.post(baseUrl + 'mch/consume', {code: [...value].reverse().join(''), mchid: sessionStorage.phone})
+        vm.axios.post(baseUrl + 'mch/consume', {code: value, mchid: sessionStorage.phone})
         .then((res) => {
           vm.$vux.loading.hide()
           if (res.data.code === 0) {

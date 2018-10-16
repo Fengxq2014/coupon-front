@@ -16,7 +16,7 @@
                 <tbody>
                 <tr v-for="item in list">
                     <td>{{item.date}}</td>
-                    <td>{{item.sum}}</td>
+                    <td>{{out(item.sum)}}</td>
                 </tr>
                 </tbody>
             </x-table>
@@ -78,6 +78,10 @@ export default {
           })
         }
       })
+    },
+    out (i) {
+      let num = i + ''
+      return num.substring(0, num.length - 2) + '.' + num.substring(num.length - 2)
     },
     click (menuKey, menuItem) {
       this.$router.push({path: '/' + menuKey})
