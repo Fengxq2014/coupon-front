@@ -93,7 +93,7 @@ export default {
     resetCode () {
       let vm = this
       vm.showAccessButton = true
-      vm.countdown = 60
+      vm.countdown = 900
       vm.showAccessTip = '重新获取'
     },
     login () {
